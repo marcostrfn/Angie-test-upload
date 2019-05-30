@@ -1,8 +1,28 @@
-<p>
-  <canvas id="stage"></canvas>
-  <button class="btn btn-primary btn-lg btn-block" (click)='accion()'>click</button>
-  <button *ngIf="mostrarBoton == true" (click)="rellenar()">Draw rectable</button>
-</p>
-<img  id="im" style="visibility: hidden" [src]="imgscr" />
+<section id="face">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <h2>{{title}}</h2>
 
+        <div class="d-flex justify-content-center">
+          <canvas id="canvas-input"></canvas>
+        </div>
 
+        <div class="d-flex justify-content-center mt-3">
+
+          <select (change)="onChangeImage($event.target.value)">
+            <option *ngFor="let food of foods" [value]="food.value">
+              {{food.display}}
+            </option>
+          </select>
+
+          <button class="btn btn-primary" *ngIf="mostrarBoton == true" (click)="drawFace()">dibujar</button>
+        </div>
+        <div class="d-flex justify-content-center">
+          <img id="image-input" style="visibility: hidden" [src]="imgscr" />
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

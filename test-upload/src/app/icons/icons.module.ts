@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { FeatherModule } from 'angular-feather';
-import { Camera, Heart, Github, Archive, Upload} from 'angular-feather/icons';
+import { Camera, Heart, Github, Archive, Upload, Briefcase, Eye} from 'angular-feather/icons';
 
 /* https://www.npmjs.com/package/angular-feather */
 const icons = {
@@ -9,7 +9,9 @@ const icons = {
   Heart,
   Github,
   Archive,
-  Upload
+  Upload,
+  Briefcase,
+  Eye
 };
 
 @NgModule({

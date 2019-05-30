@@ -4,6 +4,13 @@ import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
 import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 import { bloomHasToken } from '@angular/core/src/render3/di';
+import { FaceDetection } from 'face-api.js';
+
+
+export interface Food {
+  value: string;
+  display: string;
+}
 
 @Component({
   selector: 'app-facedetection',
@@ -13,113 +20,102 @@ import { bloomHasToken } from '@angular/core/src/render3/di';
 export class FacedetectionComponent implements OnInit {
 
   private context: CanvasRenderingContext2D;
-  private canvasWidth: number;
-  private canvasHeight: number;
+  private MODEL_URL: string;
+  private imgscr: string;
+  private myImg;
+  private mostrarBoton: boolean;
+  private imageInput: string;
+  private canvasInput: string;
 
-  imgscr = 'assets/imagen2.jpg';
-  myImg = new Image();
-  mostrarBoton : boolean;
+  selectedValue: string; 
+  foods: Food[] = [
+    {value: 'steak', display: 'Steak'},
+    {value: 'pizza', display: 'Pizza'},
+    {value: 'tacos', display: 'Tacos'}
+ ];
 
   constructor() {
     this.mostrarBoton = false;
+    this.myImg = new Image();
+    this.MODEL_URL = '/assets/models';
+    this.imgscr = 'assets/imagen2.jpg';
+    this.imageInput = 'image-input';
+    this.canvasInput = 'canvas-input';
   }
+
+  
 
   ngOnInit() {
-
-    let elemento = document.getElementById("stage") as HTMLCanvasElement
+    let elemento = document.getElementById(this.canvasInput) as HTMLCanvasElement
     this.context = elemento.getContext('2d');
-    this.canvasWidth = elemento.width;
-    this.canvasHeight = elemento.height;
-    this.addShadowEffect();
-
-    let a = this.context;
-    let m = this.myImg;
-    let miBoton = this.mostrarBoton;
-
-    this.myImg.onload = function () {
-      a.canvas.width = m.width;
-      a.canvas.height = m.height;
-      a.drawImage(m, 0, 0);
-    };
-    this.myImg.src = this.imgscr;
-
-
-    async function run(f: FacedetectionComponent) {
-      const MODEL_URL = '/assets/models'
-
-      console.log(miBoton);
-
-      console.log('inicio carga de componentes');
-      await faceapi.loadSsdMobilenetv1Model(MODEL_URL);
-      await faceapi.loadFaceLandmarkModel(MODEL_URL);
-      await faceapi.loadFaceRecognitionModel(MODEL_URL);
-      console.log('fin carga de componentes');
-      f.mostrarBoton = true;
-    };
-
-    run(this);
-
-
+    this.prepareImg();
+    this.prepareFaceDetector();
   }
 
-  private rellenar() {
 
-
-    console.log('inicio rellenar');
-
-    let ctx = this.context;
-
-    async function run() {
-
-      const input = "im";
-      const mycanvas = "stage";
+  private drawFace() {
+    
+    this.mostrarBoton = false;
+    
+    async function run(f: FacedetectionComponent) {
+      
+      console.log('Inicio FaceDetector');
+      const input = f.imageInput;
+      const mycanvas = f.canvasInput;
+     
       let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors();
       console.log(fullFaceDescriptions);
 
-
       fullFaceDescriptions.forEach(fd => {
-        //ctx.beginPath();
-        //ctx.rect(fd.detection.box.x, fd.detection.box.y, fd.detection.box.width, fd.detection.box.height);
-        //ctx.fillStyle = "red";
-        //ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(fd.detection.box.x, fd.detection.box.y);
-        ctx.lineTo(fd.detection.box.width+fd.detection.box.x, fd.detection.box.height+fd.detection.box.y);
-        ctx.stroke();
+        f.context.beginPath();
+        f.context.moveTo(fd.detection.box.x, fd.detection.box.y);
+        f.context.lineTo(fd.detection.box.width + fd.detection.box.x, fd.detection.box.height + fd.detection.box.y);
+        f.context.stroke();
 
-        ctx.beginPath();
-        ctx.moveTo(fd.detection.box.x+fd.detection.box.width/2, fd.detection.box.y);
-        ctx.lineTo(fd.detection.box.x+fd.detection.box.width/2, fd.detection.box.y+fd.detection.box.height );
-        ctx.stroke();
+        f.context.beginPath();
+        f.context.moveTo(fd.detection.box.x + fd.detection.box.width / 2, fd.detection.box.y);
+        f.context.lineTo(fd.detection.box.x + fd.detection.box.width / 2, fd.detection.box.y + fd.detection.box.height);
+        f.context.stroke();
 
-        ctx.beginPath();
-        ctx.moveTo(fd.detection.box.x, fd.detection.box.y+fd.detection.box.height/2);
-        ctx.lineTo(fd.detection.box.x+fd.detection.box.width, fd.detection.box.y+fd.detection.box.height/2 );
-        ctx.stroke();
-
-
+        f.context.beginPath();
+        f.context.moveTo(fd.detection.box.x, fd.detection.box.y + fd.detection.box.height / 2);
+        f.context.lineTo(fd.detection.box.x + fd.detection.box.width, fd.detection.box.y + fd.detection.box.height / 2);
+        f.context.stroke();
       });
 
       faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
-      console.log("final");
+      console.log('Final FaceDetector');
+      f.mostrarBoton = true;
     }
+    run(this);
+  }
 
-    run();
-
+  private prepareImg() {
+    this.myImg.onload = (function (f: FacedetectionComponent) {
+      return function () {
+        f.context.canvas.width = f.myImg.width;
+        f.context.canvas.height = f.myImg.height;
+        f.context.drawImage(f.myImg, 0, 0);
+      };
+    })(this);
+    this.myImg.src = this.imgscr;
   }
 
 
-  private accion() {
-    console.log(this.mostrarBoton);
+  private prepareFaceDetector() {
+    async function run(f: FacedetectionComponent) {
+      console.log('Inicio carga de modelos FaceDetector');
+      await faceapi.loadSsdMobilenetv1Model(f.MODEL_URL);
+      await faceapi.loadFaceLandmarkModel(f.MODEL_URL);
+      await faceapi.loadFaceRecognitionModel(f.MODEL_URL);
+      console.log('Fin carga de modelos FaceDetector');
+      f.mostrarBoton = true;
+    };
+    run(this);
   }
 
-
-  private addShadowEffect() {
-    this.context.shadowBlur = 5;
-    this.context.shadowOffsetX = 2;
-    this.context.shadowOffsetY = 2;
-    this.context.shadowColor = '#333';
-    this.context.globalAlpha = 0.8;
+  onChangeImage(value: string) {
+    console.log(value);
   }
 
 

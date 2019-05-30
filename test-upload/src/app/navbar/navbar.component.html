@@ -14,62 +14,31 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/componente2']">
+          <i-feather name="briefcase" class="fill-blue"></i-feather> 
           Componente 2
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/upload']">
-          <i-feather name="upload" class="fill-red"></i-feather> Upload
+          <i-feather name="upload" class="fill-blue"></i-feather> Upload
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/facedetection']">
-          <i-feather name="upload" class="fill-red"></i-feather> face
-        </a>
-      </li>
+      
 
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-
-          Reports
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-
-          Integrations
-        </a>
-      </li>
     </ul>
 
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-      <span>Saved reports</span>
+      <span>Otros</span>
     </h6>
 
     <ul class="nav flex-column mb-2">
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          Current month
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
 
-          Last quarter
-        </a>
-      </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-
-          Social engagement
+        <a class="nav-link" [routerLink]="['/facedetection']">
+          <i-feather name="eye" class="fill-blue"></i-feather> face
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-
-          Year-end sale
-        </a>
-      </li>
+  
     </ul>
   </div>
 </nav>
