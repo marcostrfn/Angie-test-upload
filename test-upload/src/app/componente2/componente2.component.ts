@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { logMethod } from '../decoradores';
+
 
 @Component({
   selector: 'app-componente2',
@@ -10,6 +12,11 @@ export class Componente2Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.prueba(2,2,3);
   }
-
+  
+  @logMethod
+  prueba(a: number, b: number, c: number) : number {
+    return a+b+c;
+  }
 }
