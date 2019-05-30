@@ -1,0 +1,8 @@
+<p>
+  <canvas id="stage"></canvas>
+  <button class="btn btn-primary btn-lg btn-block" (click)='accion()'>click</button>
+  <button *ngIf="mostrarBoton == true" (click)="rellenar()">Draw rectable</button>
+</p>
+<img  id="im" style="visibility: hidden" [src]="imgscr" />
+
+

@@ -1,0 +1,20 @@
+/* iconsModule */
+.big {
+  height: 50px;
+  width: 50px;
+}
+
+.fill-red {
+  fill: red;
+}
+
+.fill-green {
+  fill: green;
+  fill-opacity: .5;
+}
+
+.fill-blue {
+  fill: #1100ff;
+  fill-opacity: .5;
+}
+/* fin iconsModule */

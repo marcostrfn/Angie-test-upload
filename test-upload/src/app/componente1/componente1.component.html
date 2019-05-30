@@ -1,0 +1,30 @@
+
+
+<h2>Angular Feather</h2>
+
+<h3>
+  Static use-case
+</h3>
+
+<p>
+  <i-feather name="camera" class="big"></i-feather>
+  <i-feather name="heart" class="big fill-red"></i-feather>
+  <i-feather name="github" class="big fill-green"></i-feather>
+</p>
+
+<p>
+    <i-feather name="camera" ></i-feather>
+    <i-feather name="heart" class="fill-red"></i-feather>
+    <i-feather name="github" class="fill-green"></i-feather>
+    <i-feather name="archive" class="fill-blue"></i-feather>
+  </p>
+
+<h3>
+  Dynamic use-case
+</h3>
+
+<p>
+  <ng-container *ngFor="let icon of icons">
+    <i-feather [name]="icon.name" [ngClass]="icon.class"></i-feather>
+  </ng-container>
+</p>
