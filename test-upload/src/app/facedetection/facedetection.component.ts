@@ -30,9 +30,12 @@ export class FacedetectionComponent implements OnInit {
   selectedValue: string;
   imagenes: Imagenes[] = [
     { value: '/assets/equipoa.jpg', display: 'equipo A' },
-    { value: '/assets/imagen02.jpg', display: 'Barsa' },
+    { value: '/assets/madrid.jpg', display: 'Madrid' },
+    { value: '/assets/imagen02.jpg', display: 'Puto Barsa' },
     { value: '/assets/imagen2.jpg', display: 'dni 1' },
-    { value: '/assets/imagen3.jpg', display: 'dni 2' }
+    { value: '/assets/imagen3.jpg', display: 'dni 2' },
+    { value: '/assets/concierto.jpg', display: 'concierto' },
+    { value: '/assets/equipochicas.jpg', display: 'equipo chicas' }
   ];
 
   constructor() {
@@ -42,7 +45,7 @@ export class FacedetectionComponent implements OnInit {
     this.canvasInput = 'canvas-input';
     this.myImg = new Image();
     this.imgscr = this.imagenes[0].value;
-    
+
   }
 
 
@@ -57,7 +60,7 @@ export class FacedetectionComponent implements OnInit {
 
   private drawFace() {
 
-    this.mostrarBoton = false;
+    
 
     async function run(f: FacedetectionComponent) {
 
@@ -85,30 +88,36 @@ export class FacedetectionComponent implements OnInit {
         f.context.stroke();
       });
 
-      faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
-      console.log('Final FaceDetector');
-      f.mostrarBoton = true;
 
-
+      let x = 0;
       fullFaceDescriptions.forEach(fd => {
 
         let nueva = new Image();
-        let elemento1 = document.getElementById("misCanvas") as HTMLCanvasElement
+        let div = document.getElementById("misCanvas");
+        let nodeCanvas = document.createElement("canvas");
+        const nombre = "canvas" + x++;
+        console.log("nombre ", nombre)
+        nodeCanvas.setAttribute('id', nombre);
+        nodeCanvas.setAttribute('style', 'outline: black 3px solid;margin: 5px');
+        div.appendChild(nodeCanvas);
+
+        let elemento1 = document.getElementById(nombre) as HTMLCanvasElement
         let context1 = elemento1.getContext('2d');
 
-        nueva.onload = (function (f: FacedetectionComponent, x: number, y: number, px: number, py: number ) {
+        nueva.onload = (function (f: FacedetectionComponent, x: number, y: number, px: number, py: number) {
           return function () {
             context1.canvas.width = px;
             context1.canvas.height = py;
-            context1.drawImage(nueva, x,y,px,py,0,0,px,py);
+            context1.drawImage(nueva, x, y, px, py, 0, 0, px, py);
           };
-        })(f, fd.detection.box.x, fd.detection.box.y,fd.detection.box.width, fd.detection.box.height);
+        })(f, fd.detection.box.x, fd.detection.box.y, fd.detection.box.width, fd.detection.box.height);
         nueva.src = f.imgscr;
-        
+
       });
 
-     
-
+      faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
+      console.log('Final FaceDetector');
+      
 
     }
     run(this);
@@ -143,6 +152,11 @@ export class FacedetectionComponent implements OnInit {
     this.myImg = new Image();
     this.imgscr = value;
     this.prepareImg();
+    let div = document.getElementById("misCanvas");
+    // div.childNodes.forEach(d => d.remove());
+    while (div.firstChild) {
+      div.removeChild(div.firstChild);
+    }
     // this.prepareFaceDetector();
   }
 
