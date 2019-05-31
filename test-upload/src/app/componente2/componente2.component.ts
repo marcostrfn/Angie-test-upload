@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { logMethod } from '../decoradores';
+import { logMethod } from '../app.decoradores';
 
 
 @Component({
