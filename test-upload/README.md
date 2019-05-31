@@ -46,7 +46,16 @@ En app.module.ts añadir asegurse que está añadido en imports numero módulo:
  `import { IconsModule } from './icons/icons.module';`
  
  `imports: [ ...,IconsModule],`
-  
+ 
+En icons.module.ts añadiremos los iconos que vayamos a usar:
+
+`import { Camera, Heart, Github, Archive, Upload, Briefcase, Eye} from 'angular-feather/icons';`
+
+En app.component.css podemos añadir estilos:
+
+`.big { height: 50px; width: 50px; }`
+`.fill-red {fill: red;}`
+`.fill-green {fill: green;fill-opacity: .5;}`
 
 Ver [angular-feather](https://www.npmjs.com/package/angular-feather)
 
