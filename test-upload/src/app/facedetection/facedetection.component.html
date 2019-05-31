@@ -4,11 +4,7 @@
       <div class="col-lg-8 mx-auto">
         <h2>{{title}}</h2>
 
-        <div class="d-flex justify-content-center">
-          <canvas id="canvas-input"></canvas>
-        </div>
-
-        <div *ngIf="mostrarBoton == true" class="d-flex justify-content-center mt-3">
+        <div class="d-flex justify-content-center mb-3">
 
           <select (change)="onChangeImage($event.target.value)">
             <option *ngFor="let imagen of imagenes" [value]="imagen.value">
@@ -21,7 +17,16 @@
 
 
         <div class="d-flex justify-content-center">
-          <img id="image-input" style="visibility: hidden" [src]="imgscr" />
+          <canvas id="canvas-input"></canvas>
+        </div>
+
+        <div  class="d-flex justify-content-center mt-3">
+          <canvas style="outline: black 3px solid;" id="misCanvas"></canvas>
+        </div>
+
+
+        <div class="d-flex justify-content-center">
+          <img id="image-input"  [src]="imgscr" />
         </div>
 
       </div>

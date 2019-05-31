@@ -88,6 +88,28 @@ export class FacedetectionComponent implements OnInit {
       faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
       console.log('Final FaceDetector');
       f.mostrarBoton = true;
+
+
+      fullFaceDescriptions.forEach(fd => {
+
+        let nueva = new Image();
+        let elemento1 = document.getElementById("misCanvas") as HTMLCanvasElement
+        let context1 = elemento1.getContext('2d');
+
+        nueva.onload = (function (f: FacedetectionComponent, x: number, y: number, px: number, py: number ) {
+          return function () {
+            context1.canvas.width = px;
+            context1.canvas.height = py;
+            context1.drawImage(nueva, x,y,px,py,0,0,px,py);
+          };
+        })(f, fd.detection.box.x, fd.detection.box.y,fd.detection.box.width, fd.detection.box.height);
+        nueva.src = f.imgscr;
+        
+      });
+
+     
+
+
     }
     run(this);
   }
