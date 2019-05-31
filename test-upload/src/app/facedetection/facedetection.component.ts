@@ -38,7 +38,7 @@ export class FacedetectionComponent implements OnInit {
     this.mostrarBoton = false;
     this.myImg = new Image();
     this.MODEL_URL = '/assets/models';
-    this.imgscr = 'assets/imagen2.jpg';
+    this.imgscr = 'assets/imagen02.jpg';
     this.imageInput = 'image-input';
     this.canvasInput = 'canvas-input';
   }

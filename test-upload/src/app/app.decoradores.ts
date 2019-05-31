@@ -2,9 +2,6 @@ export function logMethod(
     target: Object,
     propertyName: string,
     propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
-    // target === Employee.prototype
-    // propertyName === "greet"
-    // propertyDesciptor === Object.getOwnPropertyDescriptor(Employee.prototype, "greet")
     const method = propertyDesciptor.value;
 
     propertyDesciptor.value = function (...args: any[]) {
