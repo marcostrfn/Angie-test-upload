@@ -31,7 +31,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 Run `npm install`
 
+## Instalar librerías necesarias para reconocimiento de imagenes
+
 Run `npm i face-api.js`
 
 Run `npm i canvas`
+
+## Iconos de angular-feather
+
+Ver [angular-feather](https://www.npmjs.com/package/angular-feather)
+
+
 
