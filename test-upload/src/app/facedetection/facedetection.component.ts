@@ -7,7 +7,7 @@ import { bloomHasToken } from '@angular/core/src/render3/di';
 import { FaceDetection } from 'face-api.js';
 
 
-export interface Food {
+export interface Imagenes {
   value: string;
   display: string;
 }
@@ -27,23 +27,25 @@ export class FacedetectionComponent implements OnInit {
   private imageInput: string;
   private canvasInput: string;
 
-  selectedValue: string; 
-  foods: Food[] = [
-    {value: 'steak', display: 'Steak'},
-    {value: 'pizza', display: 'Pizza'},
-    {value: 'tacos', display: 'Tacos'}
- ];
+  selectedValue: string;
+  imagenes: Imagenes[] = [
+    { value: '/assets/equipoa.jpg', display: 'equipo A' },
+    { value: '/assets/imagen02.jpg', display: 'Barsa' },
+    { value: '/assets/imagen2.jpg', display: 'dni 1' },
+    { value: '/assets/imagen3.jpg', display: 'dni 2' }
+  ];
 
   constructor() {
     this.mostrarBoton = false;
-    this.myImg = new Image();
     this.MODEL_URL = '/assets/models';
-    this.imgscr = 'assets/imagen02.jpg';
     this.imageInput = 'image-input';
     this.canvasInput = 'canvas-input';
+    this.myImg = new Image();
+    this.imgscr = this.imagenes[0].value;
+    
   }
 
-  
+
 
   ngOnInit() {
     let elemento = document.getElementById(this.canvasInput) as HTMLCanvasElement
@@ -54,15 +56,15 @@ export class FacedetectionComponent implements OnInit {
 
 
   private drawFace() {
-    
+
     this.mostrarBoton = false;
-    
+
     async function run(f: FacedetectionComponent) {
-      
+
       console.log('Inicio FaceDetector');
       const input = f.imageInput;
       const mycanvas = f.canvasInput;
-     
+
       let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors();
       console.log(fullFaceDescriptions);
 
@@ -116,6 +118,10 @@ export class FacedetectionComponent implements OnInit {
 
   onChangeImage(value: string) {
     console.log(value);
+    this.myImg = new Image();
+    this.imgscr = value;
+    this.prepareImg();
+    // this.prepareFaceDetector();
   }
 
 

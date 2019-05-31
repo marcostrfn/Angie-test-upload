@@ -11,13 +11,15 @@
         <div class="d-flex justify-content-center mt-3">
 
           <select (change)="onChangeImage($event.target.value)">
-            <option *ngFor="let food of foods" [value]="food.value">
-              {{food.display}}
+            <option *ngFor="let imagen of imagenes" [value]="imagen.value">
+              {{imagen.display}}
             </option>
           </select>
 
           <button class="btn btn-primary" *ngIf="mostrarBoton == true" (click)="drawFace()">dibujar</button>
         </div>
+
+
         <div class="d-flex justify-content-center">
           <img id="image-input" style="visibility: hidden" [src]="imgscr" />
         </div>
