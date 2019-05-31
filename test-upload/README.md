@@ -60,4 +60,4 @@ En app.component.css podemos añadir estilos:
 Ver [angular-feather](https://www.npmjs.com/package/angular-feather)
 
 
-
+.
