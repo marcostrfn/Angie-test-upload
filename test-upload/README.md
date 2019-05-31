@@ -39,6 +39,18 @@ Run `npm i canvas`
 
 ## Iconos de angular-feather
 
+Generamos modulo para iconos `ng generate module icons`
+
+En app.module.ts añadir asegurse que está añadido en imports numero módulo:
+
+ import { IconsModule } from './icons/icons.module';
+ 
+ imports: [
+    ...,
+    IconsModule
+  ],
+  
+
 Ver [angular-feather](https://www.npmjs.com/package/angular-feather)
 
 
