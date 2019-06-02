@@ -38,7 +38,8 @@ export class UploadfileComponent implements OnInit {
       myfile: ['']
     });
   }
-
+  
+  
   onResponse(res) {
     this.uploadResponse = res;
     console.log(this.uploadResponse);

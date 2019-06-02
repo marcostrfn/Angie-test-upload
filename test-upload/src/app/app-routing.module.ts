@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { Componente2Component } from './componente2/componente2.component';
 import { Componente1Component } from './componente1/componente1.component';
-import { UploadfileComponent } from './uploadfile/uploadfile.component';
 import { FacedetectionComponent } from './facedetection/facedetection.component';
 import { UploadDetectComponent } from './upload-detect/upload-detect.component';
 

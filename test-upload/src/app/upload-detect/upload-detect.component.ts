@@ -21,6 +21,7 @@ export class UploadDetectComponent implements OnInit {
   procesaPropagar(dataUrl) {
     console.log("recibido");
     this.imgData = dataUrl;
+    
   }
 
   loadImg() {
