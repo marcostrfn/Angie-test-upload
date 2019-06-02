@@ -18,13 +18,16 @@ export class UploadDetectComponent implements OnInit {
   ngOnInit() {
   }
 
+  procesaPropagar(dataUrl) {
+    console.log("recibido");
+    this.imgData = dataUrl;
+  }
 
   loadImg() {
     console.log('pulsado');
     let dataUrl = this.myDataImgService.getDataUrl();
     console.log(dataUrl);
     this.imgData = dataUrl;
-
   }
 
 }

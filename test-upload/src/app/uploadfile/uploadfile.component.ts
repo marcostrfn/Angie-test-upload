@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from  '@angular/forms';
 import { UploadFileService } from  './uploadfile.service';
 import { JpegBase64 } from './jpegbase64.pipe';
@@ -23,6 +23,10 @@ export class UploadfileComponent implements OnInit {
   routeImg: string;
   myDataImgService: DataImgService;
 
+
+  @Output()
+  propagar = new EventEmitter<string>();
+
   constructor(private formBuilder: FormBuilder, private uploadService: UploadFileService, private jpegBase64: JpegBase64, private dataImgService: DataImgService) {
         this.myUploadService = uploadService;
         this.myDataImgService = dataImgService;
@@ -41,6 +45,9 @@ export class UploadfileComponent implements OnInit {
     if (this.uploadResponse.status=='upload') {
       this.routeImg = this.jpegBase64.transform(this.uploadResponse.data);
       this.myDataImgService.setDataUrl(this.routeImg);
+      
+      console.log('propagar');
+      this.propagar.emit(this.routeImg);
     }
   }
 
