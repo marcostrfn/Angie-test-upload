@@ -14,17 +14,24 @@
           <button class="btn btn-primary" (click)="drawFace()">dibujar</button>
         </div>
 
+        <!-- div para mostrar la imagen cargada en un canvas-->
         <div id="misCanvas" class="d-flex justify-content-center mt-3">
         </div>
 
-
+        <!-- div para mostrar los recortes de imagenes en canvas -->
         <div class="d-flex justify-content-center">
           <canvas id="canvas-input"></canvas>
         </div>
 
+        <!-- div para mostrar los recortes de imaganes creados desde canvas -->
+        <div id="misImagenes" class="d-flex justify-content-center mt-3">
+        </div>
+
+        <!-- la imagen principal oculta -->
         <div class="d-flex justify-content-center">
           <img id="image-input" class="d-none" [src]="imgscr" />
         </div>
+
 
       </div>
     </div>

@@ -43,24 +43,18 @@ export class FacedetectionComponent implements OnInit {
     this.MODEL_URL = '/assets/models';
     this.imageInput = 'image-input';
     this.canvasInput = 'canvas-input';
-    this.myImg = new Image();
-    this.imgscr = this.imagenes[0].value;
-
   }
-
-
 
   ngOnInit() {
     let elemento = document.getElementById(this.canvasInput) as HTMLCanvasElement
     this.context = elemento.getContext('2d');
-    this.prepareImg();
     this.prepareFaceDetector();
+
+    this.prepareImg(this.imagenes[0].value);
   }
 
 
-  private drawFace() {
-
-    
+  private drawFace() : void {
 
     async function run(f: FacedetectionComponent) {
 
@@ -71,6 +65,7 @@ export class FacedetectionComponent implements OnInit {
       let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors();
       console.log(fullFaceDescriptions);
 
+      // dibujo de lineas en rostros detectados
       fullFaceDescriptions.forEach(fd => {
         f.context.beginPath();
         f.context.moveTo(fd.detection.box.x, fd.detection.box.y);
@@ -109,6 +104,13 @@ export class FacedetectionComponent implements OnInit {
             context1.canvas.width = px;
             context1.canvas.height = py;
             context1.drawImage(nueva, x, y, px, py, 0, 0, px, py);
+
+            // creamos una imagen nueva desde un canvas
+            let image = new Image();
+            image.setAttribute("class", "img-fluid img-thumbnail");
+            image.src = context1.canvas.toDataURL();
+            document.getElementById('misImagenes').appendChild(image);
+
           };
         })(f, fd.detection.box.x, fd.detection.box.y, fd.detection.box.width, fd.detection.box.height);
         nueva.src = f.imgscr;
@@ -117,13 +119,14 @@ export class FacedetectionComponent implements OnInit {
 
       faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
       console.log('Final FaceDetector');
-      
 
     }
     run(this);
   }
 
-  private prepareImg() {
+  private prepareImg(value: string): void {
+    this.myImg = new Image();
+    this.imgscr = value;
     this.myImg.onload = (function (f: FacedetectionComponent) {
       return function () {
         f.context.canvas.width = f.myImg.width;
@@ -135,7 +138,7 @@ export class FacedetectionComponent implements OnInit {
   }
 
 
-  private prepareFaceDetector() {
+  private prepareFaceDetector() : void{
     async function run(f: FacedetectionComponent) {
       console.log('Inicio carga de modelos FaceDetector');
       await faceapi.loadSsdMobilenetv1Model(f.MODEL_URL);
@@ -147,17 +150,22 @@ export class FacedetectionComponent implements OnInit {
     run(this);
   }
 
-  onChangeImage(value: string) {
-    console.log(value);
-    this.myImg = new Image();
-    this.imgscr = value;
-    this.prepareImg();
-    let div = document.getElementById("misCanvas");
-    // div.childNodes.forEach(d => d.remove());
-    while (div.firstChild) {
-      div.removeChild(div.firstChild);
+  private removeElement(elemento: HTMLElement) : void {
+    while (elemento.firstChild) {
+      elemento.removeChild(elemento.firstChild);
     }
-    // this.prepareFaceDetector();
+  }
+
+  private onChangeImage(value: string) : void {
+    console.log(value);
+    
+    this.prepareImg(value);
+    
+    let divImg = document.getElementById("misImagenes");
+    let div = document.getElementById("misCanvas");
+    
+    this.removeElement(divImg);
+    this.removeElement(div);
   }
 
 

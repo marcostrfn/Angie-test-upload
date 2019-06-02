@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from  '@angular/forms';
 import { UploadFileService } from  './uploadfile.service';
 import { JpegBase64 } from './jpegbase64.pipe';
 import { MySafeUrl } from '../mysafeurl.pipe';
+import { DataImgService } from '../data-img.service';
 
 @Component({
   selector: 'app-uploadfile',
@@ -20,9 +21,11 @@ export class UploadfileComponent implements OnInit {
   uploadResponse = { status: '', message: '', filePath: '', data: '' };
   myUploadService: UploadFileService;
   routeImg: string;
+  myDataImgService: DataImgService;
 
-  constructor(private formBuilder: FormBuilder, private uploadService: UploadFileService, private jpegBase64: JpegBase64) {
+  constructor(private formBuilder: FormBuilder, private uploadService: UploadFileService, private jpegBase64: JpegBase64, private dataImgService: DataImgService) {
         this.myUploadService = uploadService;
+        this.myDataImgService = dataImgService;
   }
 
 
@@ -37,6 +40,7 @@ export class UploadfileComponent implements OnInit {
     console.log(this.uploadResponse);
     if (this.uploadResponse.status=='upload') {
       this.routeImg = this.jpegBase64.transform(this.uploadResponse.data);
+      this.myDataImgService.setDataUrl(this.routeImg);
     }
   }
 
