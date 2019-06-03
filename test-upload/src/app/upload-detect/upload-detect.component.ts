@@ -14,6 +14,10 @@ export class UploadDetectComponent implements OnInit {
   private imageInput: string;
   private imgData: string;
 
+  private canvasContainerResult:string;
+  private imagenesContainerResult:string;
+  
+
   private MODEL_URL: string;
 
 
@@ -21,6 +25,8 @@ export class UploadDetectComponent implements OnInit {
     this.MODEL_URL = '/assets/models';
     this.imageInput = 'image-input';
     this.canvasInput = 'canvas-input';
+    this.canvasContainerResult = 'canvas-container-result';
+    this.imagenesContainerResult = 'imagenes-container-result';
   }
 
   ngOnInit() {
@@ -66,8 +72,8 @@ export class UploadDetectComponent implements OnInit {
 
   private drawFace(): void {
 
-    const divImg = document.getElementById('misImagenes');
-    const div = document.getElementById('misCanvas');
+    const divImg = document.getElementById(this.imagenesContainerResult);
+    const div = document.getElementById(this.canvasContainerResult);
 
     this.removeElement(divImg);
     this.removeElement(div);
@@ -106,7 +112,7 @@ export class UploadDetectComponent implements OnInit {
       fullFaceDescriptions.forEach(fd => {
 
         const nueva = new Image();
-        const div = document.getElementById('misCanvas');
+        const div = document.getElementById(self.canvasContainerResult);
         const nodeCanvas = document.createElement('canvas');
         const nombre = 'canvas' + x++;
         console.log('nombre ', nombre)
@@ -127,7 +133,7 @@ export class UploadDetectComponent implements OnInit {
             const image = new Image();
             image.setAttribute('class', 'd-none img-fluid img-thumbnail');
             image.src = context1.canvas.toDataURL();
-            document.getElementById('misImagenes').appendChild(image);
+            document.getElementById(self.imagenesContainerResult).appendChild(image);
 
           };
         })(self, fd.detection.box.x, fd.detection.box.y, fd.detection.box.width, fd.detection.box.height);
@@ -143,6 +149,7 @@ export class UploadDetectComponent implements OnInit {
   }
 
   private removeElement(elemento: HTMLElement): void {
+    console.log(elemento);
     while (elemento.firstChild) {
       elemento.removeChild(elemento.firstChild);
     }
