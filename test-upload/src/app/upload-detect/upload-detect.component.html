@@ -1,23 +1,33 @@
-
-<app-uploadfile (propagar)="procesaPropagar($event)"></app-uploadfile>
+<app-upload-image (propagar)="procesaPropagar($event)"></app-upload-image>
 
 <section id="upload-detect">
   <div class="container mt-4">
 
-    <div class="row">
-      <div class="col-lg-8 mx-auto">
-        <img class="img-fluid rounded" *ngIf="imgData" [src]="imgData | mySafeUrl">
-      </div>
+
+    <!-- la imagen principal oculta -->
+    <div class=" d-flex justify-content-center mt-3">
+      <img id="image-input" class="d-none" *ngIf="imgData" [src]="imgData | mySafeUrl" />
+    </div>
+
+
+<!-- div para mostrar los recortes de imagenes en canvas -->
+    <div class=" d-flex justify-content-center mt-3">
+      <canvas id="canvas-input"></canvas>
+    </div>
+
+    <!-- div para mostrar la imagen cargada en un canvas-->
+    <div class=" d-flex justify-content-center mt-3">
+      <div id="misCanvas"></div>
     </div>
 
     
 
-    <div class="row">
-      <div class="col-lg-8 mx-auto">
-        <button class="btn btn-primary btn-lg btn-block" (click)="loadImg()">Cargar</button>
-      </div>
+    
+
+    <!-- div para mostrar los recortes de imaganes creados desde canvas -->
+    <div class=" d-flex justify-content-center mt-3">
+      <div id="misImagenes"></div>
     </div>
-        
 
   </div>
 </section>
