@@ -6,24 +6,27 @@
 
     <!-- la imagen principal oculta -->
     <div class="d-flex justify-content-center mt-3">
-      <img id="image-input" class="d-none" *ngIf="imgData" [src]="imgData | mySafeUrl" />
+      <img id="image-input" class="img-fluid" *ngIf="imgData" [src]="imgData | mySafeUrl" />
     </div>
 
 
-<!-- div para mostrar los recortes de imagenes en canvas -->
+    <!-- div para mostrar los recortes de imagenes en canvas -->
     <div class="d-flex justify-content-center mt-3">
-      <canvas id="canvas-input"></canvas>
+      <canvas id="canvas-input" class="d-none"></canvas>
     </div>
 
     <!-- div para mostrar la imagen cargada en un canvas-->
     <div class="d-flex justify-content-center mt-3">
-      <div id="canvas-container-result"></div>
+      <div id="canvas-container-result" class="d-none"></div>
     </div>
 
-    <!-- div para mostrar los recortes de imaganes creados desde canvas -->
-    <div class="d-flex justify-content-center mt-3">
-      <div id="imagenes-container-result"></div>
-    </div>
+
 
   </div>
+
+  <div  id="imagenes-container-result" class="container mt-4">
+   
+  </div>
+
+
 </section>
