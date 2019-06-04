@@ -3,12 +3,24 @@ import * as faceapi from 'face-api.js';
 import { min } from 'rxjs/operators';
 import { SelectorFlags } from '@angular/compiler/src/core';
 import { FaceDetection } from 'face-api.js';
+import { posix } from 'path';
+import { TraductorPipe } from './traductor-pipe';
+
+export interface DataImagenes {
+  age: number;
+  gender: string;
+  width: number;
+  height: number;
+  posX: number;
+  posY: number;
+}
 
 
 @Component({
   selector: 'app-upload-detect',
   templateUrl: './upload-detect.component.html',
-  styleUrls: ['./upload-detect.component.css']
+  styleUrls: ['./upload-detect.component.css'],
+  providers: [ TraductorPipe ]
 })
 export class UploadDetectComponent implements OnInit {
 
@@ -24,7 +36,7 @@ export class UploadDetectComponent implements OnInit {
   private MODEL_URL: string;
 
 
-  constructor() {
+  constructor(private traductorPipe: TraductorPipe) {
     this.MODEL_URL = '/assets/models';
     this.imageInput = 'image-input';
     this.canvasInput = 'canvas-input';
@@ -94,7 +106,7 @@ export class UploadDetectComponent implements OnInit {
   }
 
 
-  private createCanvasContainer(x: number) : CanvasRenderingContext2D {
+  private createCanvasContainer(x: number): CanvasRenderingContext2D {
     const div = document.getElementById(this.canvasContainerResult);
     const nodeCanvas = document.createElement('canvas');
     const nombre = 'canvas' + x++;
@@ -107,51 +119,74 @@ export class UploadDetectComponent implements OnInit {
     return elemento1.getContext('2d');
   }
 
+
+  private createNodeImage(ctx: CanvasRenderingContext2D, data: DataImagenes): HTMLElement {
+
+    const image = new Image();
+    image.src = ctx.canvas.toDataURL();
+
+    image.setAttribute('class', 'img-thumbnail');
+    image.setAttribute('style', 'width: 150px;height: auto;');
+
+    const divRowImg = document.createElement('div');
+    divRowImg.setAttribute('class', 'row');
+
+    const divColImg = document.createElement('div');
+    divColImg.setAttribute('class', 'col col-lg-2');
+
+    const divColDescImg = document.createElement('div');
+    divColDescImg.setAttribute('class', 'col col-lg-6');
+
+    const pAge = document.createElement('h2');
+    pAge.innerHTML = "Edad : " + data.age.toFixed(2);
+
+    const pGender = document.createElement('h2');
+    pGender.innerHTML = "Genero : " + data.gender;
+
+    divColImg.appendChild(image);
+
+    divColDescImg.appendChild(pGender);
+    divColDescImg.appendChild(pAge);
+
+    divRowImg.appendChild(divColImg);
+    divRowImg.appendChild(divColDescImg);
+
+    return divRowImg;
+
+  }
+
   private DrawImageFromCanvasFace(fd: any, ctx: CanvasRenderingContext2D): void {
 
     console.log(fd.age, fd.gender);
-    const age = fd.age;
-    const gender = fd.gender;
+
+    const dataImagenes: DataImagenes = {
+      age: fd.age,
+      gender: this.traductorPipe.translate(fd.gender),
+      width: fd.detection.box.width,
+      height: fd.detection.box.height,
+      posX: fd.detection.box.x,
+      posY: fd.detection.box.y
+    };
+
+    console.log(dataImagenes);
+
     const nueva = new Image();
     const self = this;
-    nueva.onload = (function (x: number, y: number, px: number, py: number) {
+    nueva.onload = (function () {
       return function () {
-        ctx.canvas.width = px;
-        ctx.canvas.height = py;
-        ctx.drawImage(nueva, x, y, px, py, 0, 0, px, py);
+        ctx.canvas.width = dataImagenes.width;
+        ctx.canvas.height = dataImagenes.height;
+        ctx.drawImage(nueva, dataImagenes.posX, dataImagenes.posY,
+          dataImagenes.width, dataImagenes.height,
+          0, 0,
+          dataImagenes.width, dataImagenes.height);
 
         // creamos una imagen nueva desde un canvas
-        const image = new Image();
-        image.setAttribute('class', 'img-thumbnail');
-        image.setAttribute('style', 'width: 150px;height: auto;');
-        image.src = ctx.canvas.toDataURL();
-
-        const divRowImg = document.createElement('div');
-        divRowImg.setAttribute('class', 'row');
-
-        const divColImg = document.createElement('div');
-        divColImg.setAttribute('class', 'col col-lg-2');
-
-        const divColDescImg = document.createElement('div');
-        divColDescImg.setAttribute('class', 'col col-lg-6');
-        
-        const pAge = document.createElement('h2');
-        pAge.innerHTML = age;
-
-        const pGender = document.createElement('h2');
-        pGender.innerHTML = gender;
-        
-        divColImg.appendChild(image);
-       
-        divColDescImg.appendChild(pGender);
-        divColDescImg.appendChild(pAge);
-        
-        divRowImg.appendChild(divColImg);
-        divRowImg.appendChild(divColDescImg);
-
+        const divRowImg = self.createNodeImage(ctx, dataImagenes);
         document.getElementById(self.imagenesContainerResult).appendChild(divRowImg);
+
       };
-    })(fd.detection.box.x, fd.detection.box.y, fd.detection.box.width, fd.detection.box.height);
+    })();
     nueva.src = this.imgData;
   }
 
@@ -170,8 +205,6 @@ export class UploadDetectComponent implements OnInit {
       const input = self.imageInput;
       const mycanvas = self.canvasInput;
 
-      console.log(input, mycanvas);
-
       let fullFaceDescriptions = await faceapi.detectAllFaces(input)
         .withFaceLandmarks()
         .withFaceDescriptors()
@@ -179,7 +212,14 @@ export class UploadDetectComponent implements OnInit {
         .withAgeAndGender();
 
       console.log(fullFaceDescriptions);
-      
+
+      // draw a textbox displaying the face expressions with minimum probability into the canvas
+      const displaySize = { width: self.context.canvas.width, height: self.context.canvas.height }
+      const resizedResults = faceapi.resizeResults(fullFaceDescriptions, displaySize);
+      const minProbability = 0.05;
+      faceapi.draw.drawFaceExpressions(mycanvas, resizedResults, minProbability);
+      faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
+
 
       self.drawLineFace(fullFaceDescriptions, self.context);
 
@@ -189,13 +229,6 @@ export class UploadDetectComponent implements OnInit {
         self.DrawImageFromCanvasFace(fd, context1);
       });
 
-      // draw a textbox displaying the face expressions with minimum probability into the canvas
-      const displaySize = { width: self.context.canvas.width, height: self.context.canvas.height }
-      const resizedResults = faceapi.resizeResults(fullFaceDescriptions, displaySize);
-      const minProbability = 0.05;
-      faceapi.draw.drawFaceExpressions(mycanvas, resizedResults, minProbability);
-
-      faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
       console.log('Final FaceDetector');
 
     }

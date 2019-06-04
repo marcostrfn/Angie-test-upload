@@ -1,12 +1,18 @@
 <app-upload-image (propagar)="procesaPropagar($event)"></app-upload-image>
 
 <section id="upload-detect">
+
+  <div id="imagenes-container-result" class="container mt-4">
+
+  </div>
+
   <div class="container mt-4">
 
 
     <!-- la imagen principal oculta -->
     <div class="d-flex justify-content-center mt-3">
-      <img id="image-input" class="img-fluid" *ngIf="imgData" [src]="imgData | mySafeUrl" />
+      <img id="image-input" style="max-height: 400px;" class="img-fluid img-thumbnail" *ngIf="imgData"
+        [src]="imgData | mySafeUrl" />
     </div>
 
 
@@ -24,9 +30,7 @@
 
   </div>
 
-  <div  id="imagenes-container-result" class="container mt-4">
-   
-  </div>
+
 
 
 </section>
