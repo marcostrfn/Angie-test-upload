@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as faceapi from 'face-api.js';
+import { min } from 'rxjs/operators';
 
 
 @Component({
@@ -86,7 +87,7 @@ export class UploadDetectComponent implements OnInit {
 
       console.log(input, mycanvas);
 
-      let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors();
+      let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors().withFaceExpressions();
       console.log(fullFaceDescriptions);
 
       // dibujo de lineas en rostros detectados
@@ -140,6 +141,12 @@ export class UploadDetectComponent implements OnInit {
         nueva.src = self.imgData;
 
       });
+
+      // draw a textbox displaying the face expressions with minimum probability into the canvas
+      const displaySize = { width: self.context.canvas.width, height: self.context.canvas.height}
+      const resizedResults = faceapi.resizeResults(fullFaceDescriptions, displaySize);
+      const minProbability = 0.05;
+      faceapi.draw.drawFaceExpressions(mycanvas, resizedResults, minProbability);
 
       faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
       console.log('Final FaceDetector');

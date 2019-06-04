@@ -54,7 +54,7 @@ export class FacedetectionComponent implements OnInit {
   }
 
 
-  private drawFace() : void {
+  private drawFace(): void {
 
     async function run(f: FacedetectionComponent) {
 
@@ -62,7 +62,7 @@ export class FacedetectionComponent implements OnInit {
       const input = f.imageInput;
       const mycanvas = f.canvasInput;
 
-      let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors();
+      let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors().withFaceExpressions().withAgeAndGender();
       console.log(fullFaceDescriptions);
 
       // dibujo de lineas en rostros detectados
@@ -117,6 +117,12 @@ export class FacedetectionComponent implements OnInit {
 
       });
 
+      // draw a textbox displaying the face expressions with minimum probability into the canvas
+      const displaySize = { width: f.context.canvas.width, height: f.context.canvas.height };
+      const resizedResults = faceapi.resizeResults(fullFaceDescriptions, displaySize);
+      const minProbability = 0.05;
+      faceapi.draw.drawFaceExpressions(mycanvas, resizedResults, minProbability);
+
       faceapi.draw.drawDetections(mycanvas, fullFaceDescriptions);
       console.log('Final FaceDetector');
 
@@ -138,32 +144,34 @@ export class FacedetectionComponent implements OnInit {
   }
 
 
-  private prepareFaceDetector() : void{
+  private prepareFaceDetector(): void {
     async function run(f: FacedetectionComponent) {
       console.log('Inicio carga de modelos FaceDetector');
       await faceapi.loadSsdMobilenetv1Model(f.MODEL_URL);
       await faceapi.loadFaceLandmarkModel(f.MODEL_URL);
       await faceapi.loadFaceRecognitionModel(f.MODEL_URL);
+      await faceapi.loadFaceExpressionModel(f.MODEL_URL);
+      await faceapi.loadAgeGenderModel(f.MODEL_URL);
       console.log('Fin carga de modelos FaceDetector');
       f.mostrarBoton = true;
     };
     run(this);
   }
 
-  private removeElement(elemento: HTMLElement) : void {
+  private removeElement(elemento: HTMLElement): void {
     while (elemento.firstChild) {
       elemento.removeChild(elemento.firstChild);
     }
   }
 
-  private onChangeImage(value: string) : void {
+  private onChangeImage(value: string): void {
     console.log(value);
-    
+
     this.prepareImg(value);
-    
+
     let divImg = document.getElementById("misImagenes");
     let div = document.getElementById("misCanvas");
-    
+
     this.removeElement(divImg);
     this.removeElement(div);
   }
