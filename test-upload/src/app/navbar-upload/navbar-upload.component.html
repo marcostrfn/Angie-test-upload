@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Dashboard</h1>
+ 
+  <form [formGroup]="form">
+    <label class="btn btn-danger btn-file">
+      Upload <input type="file" style="display: none;" name="myfile" (click)="onClick()" (change)="onFileChange($event)">
+    </label>
+  </form>
+
+</div>
+
+<div> {{filename}} </div>
+<div *ngIf="error">
+  <div class="alert alert-danger" role="alert">
+    {{ error.message }}
+  </div>
+</div>
+
+<div *ngIf="uploadResponse.status === 'error'">
+  <div class="alert alert-danger" role="alert">
+    {{ uploadResponse.message }}
+  </div>
+</div>
+
+<div *ngIf="uploadResponse.status === 'progress'">
+  <div class="alert alert-primary" role="alert">
+    <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0"
+      aria-valuemax="100">
+      {{uploadResponse.message}}%
+    </div>
+  </div>
+</div>

@@ -1,15 +1,15 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from  '@angular/forms';
 import { JpegBase64 } from './jpegbase64.pipe';
 import { UploadImageService } from './upload-image.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-upload-image',
-  templateUrl: './upload-image.component.html',
-  styleUrls: ['./upload-image.component.css'],
-  providers: [ JpegBase64 ]
+  selector: 'app-navbar-upload',
+  templateUrl: './navbar-upload.component.html',
+  styleUrls: ['./navbar-upload.component.css'],
+  providers: [JpegBase64]
 })
-export class UploadImageComponent implements OnInit {
+export class NavbarUploadComponent implements OnInit {
 
 
   imagen: string;
@@ -18,16 +18,15 @@ export class UploadImageComponent implements OnInit {
   uploadResponse = { status: '', message: '', filePath: '', data: '' };
   myUploadService: UploadImageService;
   routeImg: string;
-
+  filename: string;
 
   @Output()
   propagar = new EventEmitter<string>();
 
   constructor(private formBuilder: FormBuilder, private uploadService: UploadImageService,
-              private jpegBase64: JpegBase64) {
-        this.myUploadService = uploadService;
+    private jpegBase64: JpegBase64) {
+    this.myUploadService = uploadService;
   }
-
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -37,7 +36,7 @@ export class UploadImageComponent implements OnInit {
 
   onResponse(res) {
     this.uploadResponse = res;
-    if (this.uploadResponse.status=='upload') {
+    if (this.uploadResponse.status == 'upload') {
       this.routeImg = this.jpegBase64.transform(this.uploadResponse.data);
       this.propagar.emit(this.routeImg);
     }
@@ -45,9 +44,9 @@ export class UploadImageComponent implements OnInit {
 
   onFileChange(event) {
     if (event.target.files.length > 0) {
-      console.log('pinchado');
       this.error = '';
       const file = event.target.files[0];
+      this.filename = file.name;
       this.form.get('myfile').setValue(file);
       this.onSubmit();
     }
@@ -63,7 +62,9 @@ export class UploadImageComponent implements OnInit {
     );
   }
 
+  onClick() {
+    this.error = '';
+  }
+
 
 }
-
-

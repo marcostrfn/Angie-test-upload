@@ -1,24 +1,20 @@
-<app-upload-image (propagar)="procesaPropagar($event)"></app-upload-image>
+<app-navbar-upload *ngIf="isLoading==false" (propagar)="procesaPropagar($event)"></app-navbar-upload>
+
+<section *ngIf="isLoading">
+  <div class="d-flex justify-content-center mt-3">
+    <h1>Cargando componentes.....</h1>
+  </div>
+</section>
+
 
 <section id="upload-detect">
 
-  <div id="imagenes-container-result" class="container mt-4">
-
-  </div>
-
   <div class="container mt-4">
 
-
-    <!-- la imagen principal oculta -->
+    <!-- la imagen principal -->
     <div class="d-flex justify-content-center mt-3">
       <img id="image-input" style="max-height: 400px;" class="img-fluid img-thumbnail" *ngIf="imgData"
         [src]="imgData | mySafeUrl" />
-    </div>
-
-
-    <!-- div para mostrar los recortes de imagenes en canvas -->
-    <div class="d-flex justify-content-center mt-3">
-      <canvas id="canvas-input" class="d-none"></canvas>
     </div>
 
     <!-- div para mostrar la imagen cargada en un canvas-->
@@ -26,8 +22,28 @@
       <div id="canvas-container-result" class="d-none"></div>
     </div>
 
+    <!-- div para mostrar los recortes de imagenes en canvas -->
+    <div class="d-flex justify-content-center mt-3">
+      <canvas id="canvas-input" class="d-none"></canvas>
+    </div>
+
+  </div>
 
 
+
+
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Age</th>
+          <th>Gender</th>
+        </tr>
+      </thead>
+      <tbody id="imagenes-container-result">
+      </tbody>
+    </table>
   </div>
 
 

@@ -17,6 +17,7 @@ import { MySafeUrl } from './mysafeurl.pipe';
 import { FacedetectionComponent } from './facedetection/facedetection.component';
 import { UploadDetectComponent } from './upload-detect/upload-detect.component';
 import { UploadImageComponent } from './upload-image/upload-image.component';
+import { NavbarUploadComponent } from './navbar-upload/navbar-upload.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
     FacedetectionComponent,
     MySafeUrl,
     UploadDetectComponent,
-    UploadImageComponent
+    UploadImageComponent,
+    NavbarUploadComponent
   ],
   imports: [
     BrowserModule,

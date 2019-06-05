@@ -34,7 +34,8 @@ export class UploadDetectComponent implements OnInit {
 
 
   private MODEL_URL: string;
-
+  private isLoading: boolean;
+  private mostrarTabla: boolean;
 
   constructor(private traductorPipe: TraductorPipe) {
     this.MODEL_URL = '/assets/models';
@@ -42,15 +43,15 @@ export class UploadDetectComponent implements OnInit {
     this.canvasInput = 'canvas-input';
     this.canvasContainerResult = 'canvas-container-result';
     this.imagenesContainerResult = 'imagenes-container-result';
+    this.isLoading = true;
+    this.mostrarTabla = false;
+
   }
 
   ngOnInit() {
-
     const elemento = document.getElementById(this.canvasInput) as HTMLCanvasElement
     this.context = elemento.getContext('2d');
-
     this.prepareFaceDetector();
-
   }
 
   private prepareFaceDetector(): void {
@@ -62,6 +63,7 @@ export class UploadDetectComponent implements OnInit {
       await faceapi.loadFaceExpressionModel(self.MODEL_URL);
       await faceapi.loadAgeGenderModel(self.MODEL_URL);
       console.log('Fin carga de modelos FaceDetector');
+      self.isLoading = false;
     };
     run(this);
   }
@@ -81,6 +83,7 @@ export class UploadDetectComponent implements OnInit {
 
 
   procesaPropagar(dataUrl: string): void {
+    this.mostrarTabla = true;
     this.imgData = dataUrl;
     this.prepareImg2Canvas(dataUrl);
   }
@@ -119,7 +122,7 @@ export class UploadDetectComponent implements OnInit {
     return elemento1.getContext('2d');
   }
 
-
+/*
   private createNodeImage(ctx: CanvasRenderingContext2D, data: DataImagenes): HTMLElement {
 
     const image = new Image();
@@ -154,6 +157,40 @@ export class UploadDetectComponent implements OnInit {
     return divRowImg;
 
   }
+*/
+
+  private createNodeImage(ctx: CanvasRenderingContext2D, data: DataImagenes): HTMLElement {
+
+    const image = new Image();
+    image.src = ctx.canvas.toDataURL();
+
+    image.setAttribute('class', 'img-thumbnail');
+    image.setAttribute('style', 'width: 50px;height: auto;');
+
+    const divRowImg = document.createElement('tr');
+    divRowImg.setAttribute('class', 'middle');
+    const td1 = document.createElement('td');
+    td1.setAttribute('style', 'vertical-align: middle;')
+    const td2 = document.createElement('td');
+    td2.setAttribute('style', 'vertical-align: middle;')
+    const td3 = document.createElement('td');
+    td3.setAttribute('style', 'vertical-align: middle;')
+       
+
+    td1.appendChild(image);
+    td2.innerHTML = data.age.toFixed(2);
+    td3.innerHTML = data.gender;
+    
+    divRowImg.appendChild(td1);
+    divRowImg.appendChild(td2);
+    divRowImg.appendChild(td3);
+    
+    
+
+    return divRowImg;
+
+  }
+
 
   private DrawImageFromCanvasFace(fd: any, ctx: CanvasRenderingContext2D): void {
 
