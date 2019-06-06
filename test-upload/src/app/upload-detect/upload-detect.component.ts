@@ -7,8 +7,10 @@ import { posix } from 'path';
 import { TraductorPipe } from './traductor-pipe';
 
 export interface DataImagenes {
+  score: number;
   age: number;
   gender: string;
+  genderProbability: number;
   width: number;
   height: number;
   posX: number;
@@ -169,21 +171,30 @@ export class UploadDetectComponent implements OnInit {
 
     const divRowImg = document.createElement('tr');
     divRowImg.setAttribute('class', 'middle');
+
+    const td0 = document.createElement('td');
+    td0.setAttribute('style', 'vertical-align: middle;')    
     const td1 = document.createElement('td');
     td1.setAttribute('style', 'vertical-align: middle;')
     const td2 = document.createElement('td');
     td2.setAttribute('style', 'vertical-align: middle;')
     const td3 = document.createElement('td');
     td3.setAttribute('style', 'vertical-align: middle;')
-       
+    const td4 = document.createElement('td');
+    td4.setAttribute('style', 'vertical-align: middle;')
 
-    td1.appendChild(image);
-    td2.innerHTML = data.age.toFixed(2);
-    td3.innerHTML = data.gender;
     
+    td0.appendChild(image);
+    td1.innerHTML = data.score.toFixed(2);
+    td2.innerHTML = data.age.toFixed(2);
+    td3.innerHTML = data.gender.toUpperCase();
+    td4.innerHTML = data.genderProbability.toFixed(2);
+    
+    divRowImg.appendChild(td0);
     divRowImg.appendChild(td1);
     divRowImg.appendChild(td2);
     divRowImg.appendChild(td3);
+    divRowImg.appendChild(td4);
     
     
 
@@ -197,9 +208,11 @@ export class UploadDetectComponent implements OnInit {
     console.log(fd.age, fd.gender);
 
     const dataImagenes: DataImagenes = {
-      age: fd.age,
+      score: fd.detection.score,
+      age: fd.age,      
       gender: this.traductorPipe.translate(fd.gender),
-      width: fd.detection.box.width,
+      genderProbability: fd.genderProbability,
+      width: fd.detection.box.width,      
       height: fd.detection.box.height,
       posX: fd.detection.box.x,
       posY: fd.detection.box.y

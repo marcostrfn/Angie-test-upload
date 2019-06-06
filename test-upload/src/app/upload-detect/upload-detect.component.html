@@ -30,15 +30,16 @@
   </div>
 
 
-
-
-  <div class="table-responsive" *ngIf="isLoading==false">
+  <div [ngClass]="{'d-none table-responsive': mostrarTabla === true,
+    'd-none table-responsive': mostrarTabla === false }">
     <table class="table table-striped table-sm">
       <thead>
         <tr>
           <th>#</th>
+          <th>Score</th>
           <th>Age</th>
           <th>Gender</th>
+          <th>GenderProbability</th>
         </tr>
       </thead>
       <tbody id="imagenes-container-result">
