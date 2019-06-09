@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Dashboard</h1>
+
+  <label class="btn btn-danger btn-file">
+    Upload <input #file type="file" accept='image/*' style="display: none;" (change)="onFileChange(file.files)">
+  </label>
+
+</div>
+
+<div class="d-flex justify-content-center mb-2"> {{filename}} </div>
+<div class="d-flex justify-content-center mb-2">
+  <span style="color:red;" *ngIf="message">{{message}}</span>
+</div>

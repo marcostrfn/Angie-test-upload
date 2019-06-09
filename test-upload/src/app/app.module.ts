@@ -1,5 +1,5 @@
 import { BrowserModule, SafeUrl } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Sanitizer } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +18,10 @@ import { FacedetectionComponent } from './facedetection/facedetection.component'
 import { UploadDetectComponent } from './upload-detect/upload-detect.component';
 import { UploadImageComponent } from './upload-image/upload-image.component';
 import { NavbarUploadComponent } from './navbar-upload/navbar-upload.component';
+import { UploadAngieComponent } from './upload-angie/upload-angie.component';
+import { UploadFileComponent } from './upload-angie/upload-file/upload-file.component';
+import { UploadAngiePdfComponent } from './upload-angie-pdf/upload-angie-pdf.component';
+import { UploadFilePdfComponent } from './upload-angie-pdf/upload-file-pdf/upload-file-pdf.component';
 
 
 @NgModule({
@@ -35,7 +39,11 @@ import { NavbarUploadComponent } from './navbar-upload/navbar-upload.component';
     MySafeUrl,
     UploadDetectComponent,
     UploadImageComponent,
-    NavbarUploadComponent
+    NavbarUploadComponent,
+    UploadAngieComponent,
+    UploadFileComponent,
+    UploadAngiePdfComponent,
+    UploadFilePdfComponent,
   ],
   imports: [
     BrowserModule,
